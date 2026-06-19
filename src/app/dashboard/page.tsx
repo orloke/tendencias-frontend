@@ -2,6 +2,8 @@ import { DashboardHeader } from "@/components/DashboardHeader";
 import { SearchForm } from "@/components/SearchForm";
 import { DashboardStats } from "@/components/DashboardStats";
 import { WelcomeSearch } from "@/components/WelcomeSearch";
+import { DashboardSkeleton } from "@/components/DashboardSkeleton";
+import { Suspense } from "react";
 
 export default async function DashboardPage(props: {
   searchParams: Promise<{ username?: string }>;
@@ -53,7 +55,9 @@ export default async function DashboardPage(props: {
         </section>
 
         {username ? (
-          <DashboardStats username={username} />
+          <Suspense key={username} fallback={<DashboardSkeleton />}>
+            <DashboardStats username={username} />
+          </Suspense>
         ) : (
           <WelcomeSearch />
         )}

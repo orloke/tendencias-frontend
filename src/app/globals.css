@@ -60,6 +60,38 @@
   --grid-color: #1f1f2e;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --background: #09090b;
+    --foreground: #f4f4f5;
+    --card: #18181b;
+    --card-foreground: #f4f4f5;
+    --popover: #09090b;
+    --popover-foreground: #f4f4f5;
+    --primary: #6366f1;
+    --primary-foreground: #ffffff;
+    --secondary: #27272a;
+    --secondary-foreground: #fafafa;
+    --muted: #27272a;
+    --muted-foreground: #a1a1aa;
+    --accent: #27272a;
+    --accent-foreground: #fafafa;
+    --destructive: #ef4444;
+    --destructive-foreground: #fafafa;
+    --border: #27272a;
+    --input: #27272a;
+    --ring: #6366f1;
+
+    --bg-app: #09090b;
+    --bg-card: #18181b;
+    --bg-input: #09090b;
+    --text-main: #ffffff;
+    --text-muted: #a1a1aa;
+    --border-main: #27272a;
+    --grid-color: #1f1f2e;
+  }
+}
+
 @theme {
   --color-zinc-950: var(--bg-input);
   --color-zinc-900: var(--bg-card);
@@ -69,9 +101,13 @@
   --color-zinc-500: var(--text-muted);
 }
 
+html,
 body {
   background-color: var(--background);
   color: var(--foreground);
+}
+
+body {
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
