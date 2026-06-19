@@ -11,20 +11,10 @@ interface DashboardStatsProps {
 }
 
 export async function DashboardStats({ username }: DashboardStatsProps) {
-  let statsData: GithubStats | null = null;
-  let fetchError: string | null = null;
-
-  try {
-    statsData = await apiFetch<GithubStats>({
-      url: `/github/stats/${encodeURIComponent(username.trim())}`,
-      next: { revalidate: 600 },
-    });
-  } catch (error) {
-    fetchError =
-      error instanceof Error
-        ? error.message
-        : "Não foi possível conectar ao servidor backend.";
-  }
+  const { data: statsData, error: fetchError } = await apiFetch<GithubStats>({
+    url: `/github/stats/${encodeURIComponent(username.trim())}`,
+    next: { revalidate: 600 },
+  });
 
   if (fetchError) {
     return <SearchError username={username} fetchError={fetchError} />;

@@ -37,21 +37,25 @@ export function SignupForm() {
 
   const onSubmit = async (formData: SignupFormValues) => {
     try {
-      const data = await apiFetch<AuthResponse>({
+      const { data, error } = await apiFetch<AuthResponse>({
         url: "/auth/register",
         method: "POST",
         data: formData,
       });
 
-      setAuthCookie(data.access_token);
-      localStorage.setItem("user", JSON.stringify(data.user));
+      if (error) {
+        toast.error(error);
+        return;
+      }
 
-      toast.success("Cadastro realizado com sucesso!");
-      redirectToDashboard();
+      if (data) {
+        setAuthCookie(data.access_token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        toast.success("Cadastro realizado com sucesso!");
+        redirectToDashboard();
+      }
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Ocorreu um erro ao cadastrar.";
-      toast.error(message);
+      toast.error("Ocorreu um erro ao cadastrar.");
     }
   };
 

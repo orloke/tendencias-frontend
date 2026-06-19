@@ -1,12 +1,12 @@
 "use client";
 
-import { Mail, ArrowRight } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import toast from "react-hot-toast";
 import { apiFetch } from "@/actions/api";
-import { setAuthCookie, redirectToDashboard } from "@/utils/auth";
+import { redirectToDashboard, setAuthCookie } from "@/utils/auth";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowRight, Mail } from "lucide-react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import * as z from "zod";
 import { PasswordInput } from "./PasswordInput";
 
 const loginSchema = z.object({
@@ -33,21 +33,26 @@ export function LoginForm() {
 
   const onSubmit = async (formData: LoginFormValues) => {
     try {
-      const data = await apiFetch<AuthResponse>({
+      const { data, error } = await apiFetch<AuthResponse>({
         url: "/auth/login",
         method: "POST",
         data: formData,
       });
 
-      setAuthCookie(data.access_token);
-      localStorage.setItem("user", JSON.stringify(data.user));
+      if (error) {
+        toast.error(error);
+        return;
+      }
 
-      toast.success("Login realizado com sucesso!");
-      redirectToDashboard();
+      if (data) {
+        setAuthCookie(data.access_token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        toast.success("Login realizado com sucesso!");
+        redirectToDashboard();
+      }
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Ocorreu um erro ao fazer login.";
-      toast.error(message);
+      console.error(error);
+      toast.error("Ocorreu um erro ao fazer login.");
     }
   };
 
