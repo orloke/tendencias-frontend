@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GitHub Dev Analytics - Frontend 🚀
 
-## Getting Started
+Este é o repositório do **Frontend** da plataforma GitHub Dev Analytics, desenvolvido em **Next.js** com TypeScript. A aplicação consome serviços de um backend NestJS e apresenta uma interface moderna, dinâmica e 100% responsiva para análise de dados do GitHub.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🔗 Link de Produção
+
+A aplicação está hospedada e rodando em produção na Vercel:
+👉 **[https://tendencias-frontend.vercel.app/](https://tendencias-frontend.vercel.app/)**
+
+---
+
+## 👨‍💻 Dados de Contato
+
+*   **Nome:** Júnior Dering
+*   **E-mail:** juniordering@hotmail.com
+*   **GitHub:** [https://github.com/orloke](https://github.com/orloke)
+
+---
+
+## 🛠️ Tecnologias Utilizadas e Justificativas
+
+1.  **Next.js (v16+) & React 19**: 
+    *   *Justificativa:* Utilizado devido ao suporte nativo ao App Router, Server Components e Server Actions. Isso permite que a maior parte da lógica pesada e requisições ao backend ocorram do lado do servidor (SSR), melhorando a velocidade de carregamento (FCP), SEO e a segurança.
+2.  **Tailwind CSS (v4)**:
+    *   *Justificativa:* Permite a prototipagem rápida e desenvolvimento de uma interface moderna e limpa com carregamento instantâneo de estilos. Facilita o desenvolvimento de temas claros e escuros natively.
+3.  **Recharts**:
+    *   *Justificativa:* Uma biblioteca de gráficos robusta e otimizada para React, utilizada para renderizar a distribuição percentual de linguagens de programação do perfil de forma interativa e responsiva.
+4.  **React Hot Toast**:
+    *   *Justificativa:* Fornece notificações de toast elegantes e não bloqueantes para feedbacks de erro de login, cadastro ou buscas realizadas.
+5.  **Lucide React**:
+    *   *Justificativa:* Fornece ícones vetoriais modernos e leves, integrando-se perfeitamente aos estilos do Tailwind.
+
+---
+
+## 📝 Descrição da Solução Proposta
+
+O frontend consiste em um **Portal de Análise do GitHub** focado na experiência do usuário. Ele oferece:
+*   **Fluxo de Autenticação Segura**: Telas de login e cadastro integradas a cookies de sessão no navegador.
+*   **Dashboard Interativo**: Painel principal onde o usuário pode pesquisar perfis públicos do GitHub.
+*   **Análise Detalhada**: Exibe o perfil completo do desenvolvedor, estatísticas consolidadas (estrelas, forks) e um gráfico de pizza interativo mostrando as linguagens preferidas do desenvolvedor com base no inventário de repositórios.
+
+---
+
+## 🚀 Instruções de Instalação e Execução
+
+### 1. Requisitos Prévios
+*   **Node.js** (versão 20 ou superior)
+*   **NPM** ou **Yarn**
+
+### 2. Configurar Variáveis de Ambiente
+Crie um arquivo `.env` na raiz da pasta `frontend`:
+```env
+# URL do seu backend NestJS
+API_URL="http://localhost:8080"
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3. Instalação das Dependências
+Instale todos os pacotes necessários:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 4. Executar em Desenvolvimento
+Inicie o servidor local na porta **3000**:
+```bash
+npm run dev
+```
+Abra [http://localhost:3000](http://localhost:3000) no seu navegador.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 5. Compilar para Produção
+Gere o build otimizado da aplicação:
+```bash
+npm run build
+npm run start
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 📐 Arquitetura e Decisões Técnicas
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+*   **Padrão de Resposta de Server Actions (`{ data, error }`)**:
+    Em produção, o Next.js oculta por padrão qualquer mensagem de erro que seja lançada (`throw new Error`) de dentro de um Server Action. Para contornar essa restrição sem criar brechas de segurança ou "gambiarras", o helper `apiFetch` intercepta os erros do backend e os retorna em formato de objeto de dados. O componente cliente então lê a propriedade e exibe o toast correto, mantendo o código tipado e robusto.
+*   **Middleware de Proteção de Rotas**:
+    O arquivo `middleware.ts` intercepta requisições à rota `/dashboard` e redireciona usuários não autenticados de volta ao login (`/`), garantindo que dados privados nunca sejam exibidos.
+*   **Suporte a Temas (Dark/Light Mode)**:
+    Implementado utilizando `next-themes` para persistência de tema escolhido no navegador com suporte a transições suaves de cor.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## ℹ️ Outras Informações Relevantes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+*   **Validação de Formulários**: Validações de e-mail e força de senha executadas em tempo real no cliente via `zod` integrada ao `react-hook-form`.
+*   **Compatibilidade com Hydration**: Todos os componentes dinâmicos verificam se o cliente foi montado, evitando erros de hidratação típicos de SSR com datas ou temas persistidos.
